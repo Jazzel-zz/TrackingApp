@@ -8,15 +8,13 @@ const pointSchema = new mongoose.Schema({
         altitude: Number,
         accuracy: Number,
         heading: Number,
-        speed: Number,
+        speed: Number
     }
 });
-
-
 const trackSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User'
     },
     name: {
         type: String,

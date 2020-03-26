@@ -17,7 +17,7 @@ userSchema.pre('save', function (next) {
     const user = this;
     if (!user.isModified('password')) {
         return next();
-    };
+    }
 
     bcrypt.genSalt(10, (err, salt) => {
         if (err) {
@@ -34,23 +34,21 @@ userSchema.pre('save', function (next) {
     });
 });
 
+userSchema.methods.comparePassword = function (candidatePassword) {
+    const user = this;
 
-userSchema.methods.comparePassword = function comparePassword(candidatePassword) {
-    console.log(candidatePassword);
     return new Promise((resolve, reject) => {
-        bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+        bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
             if (err) {
                 return reject(err);
             }
-            else if (isMatch) {
-                return resolve(true);
-            }
-            else {
-                return reject(err);
 
+            if (!isMatch) {
+                return reject(false);
             }
+
+            resolve(true);
         });
     });
 };
-
 mongoose.model('User', userSchema);
